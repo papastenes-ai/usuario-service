@@ -1,9 +1,19 @@
-FROM eclipse-temurin:17-jdk-alpine
+# Imagen base con Java 17.
+# JRE sirve para ejecutar aplicaciones Java ya compiladas.
+FROM eclipse-temurin:17-jre-jammy
 
-WORKDIR /app
+# Se declara una variable llamada JAR_FILE.
+# Esta variable contiene la ruta del archivo .jar generado por Maven dentro de target/.
+ARG JAR_FILE=target/usuario-service-0.0.1-SNAPSHOT.jar
 
-COPY target/*.jar app.jar
+# Copia el archivo .jar desde la carpeta target/ al contenedor.
+# Dentro del contenedor se renombra como app_usuario.jar.
+COPY ${JAR_FILE} app_usuario.jar
 
-EXPOSE 8080
+# Expone el puerto que usa usuario-service.
+# Este microservicio trabaja en el puerto 8089.
+EXPOSE 8089
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Comando que se ejecuta cuando el contenedor inicia.
+# Levanta la aplicación usando java -jar.
+ENTRYPOINT ["java", "-jar", "app_usuario.jar"]
